@@ -84,7 +84,7 @@ add_action( 'widgets_init', 'wap8_flickr_me_widget', 10 );
  *
  * @package Flickr Me
  * @version 1.0.0
- * @since 1.0.0
+ * @since 1.0.1 Fetching feed over HTTPS
  * @author Erik Ford for We Are Pixel8 <@notdivisible>
  *
  */
@@ -126,9 +126,9 @@ class wap8_Flickr_Me_Widget extends WP_Widget {
 		
 		// determine if this is a group feed or not
 		if ( $flickr_group == 1 ) { // if a group feed
-			$rss = fetch_feed( 'http://api.flickr.com/services/feeds/groups_pool.gne?id=' . $flickr_id . '&lang=en-us&format=rss_200' );
+			$rss = fetch_feed( 'https://api.flickr.com/services/feeds/groups_pool.gne?id=' . $flickr_id . '&lang=en-us&format=rss_200' );
 		} else { // if not a group feed
-			$rss = fetch_feed( 'http://api.flickr.com/services/feeds/photos_public.gne?id=' . $flickr_id . '&lang=en-us&format=rss_200' );
+			$rss = fetch_feed( 'https://api.flickr.com/services/feeds/photos_public.gne?id=' . $flickr_id . '&lang=en-us&format=rss_200' );
 		}
 		
 		echo $before_widget; // echo HTML set in register_sidebar by the currently active theme

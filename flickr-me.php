@@ -4,7 +4,7 @@
 Plugin Name: Flickr Me
 Plugin URI: http://www.wearepixel8.com/plugins/flickr-me
 Description: Add a Flickr feed to any widget ready area
-Version: 1.0.0
+Version: 1.0.1
 Author: We Are Pixel8
 Author URI: http://www.wearepixel8.com
 Text Domain: wap8plugin-i18n

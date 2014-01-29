@@ -2,9 +2,9 @@
 Contributors: wearepixel8
 Tags: flickr, images, photos, sidebar, widget
 Requires at least: 3.1
-Compatible up to: 3.6.1
-Tested up to: 3.6.1
-Stable tag: 1.0.0
+Compatible up to: 3.8.1
+Tested up to: 3.8.1
+Stable tag: 1.0.1
 License: GPLv2
 
 Add Flickr feeds to your widget ready areas.
@@ -38,3 +38,6 @@ If you encounter this message, it means there are no public images in the design
 
 = 1.0.0 =
 * Initial release
+
+= 1.0.1 =
+* The widget not fetches feeds of HTTPS to prevent mix-content warnings (Props to Nick Dery)
