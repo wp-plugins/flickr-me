@@ -6,4 +6,9 @@ Flickr Me 1.0.0
 Flickr Me 1.0.1
 ===============
 
-* The widget not fetches feeds of HTTPS to prevent mix-content warnings (Props to Nick Dery)
+* The widget now fetches feeds over HTTPS to prevent mix-content warnings (Props to Nick Dery)
+
+Flickr Me 1.0.2
+===============
+
+* Fixed undefined index errors in the widget

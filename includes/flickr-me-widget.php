@@ -84,7 +84,7 @@ add_action( 'widgets_init', 'wap8_flickr_me_widget', 10 );
  *
  * @package Flickr Me
  * @version 1.0.0
- * @since 1.0.1 Fetching feed over HTTPS
+ * @since 1.0.2 Fixed undefined index errors
  * @author Erik Ford for We Are Pixel8 <@notdivisible>
  *
  */
@@ -115,12 +115,13 @@ class wap8_Flickr_Me_Widget extends WP_Widget {
 		extract( $args );
 		
 		// saved widget settings
-		$title        = apply_filters( 'widget_title', $instance['title'] );
-		$flickr_id    = $instance['flickr_id'];
-		$thumb        = $instance['flickr_thumb'];
-		$flickr_title = $instance['flickr_title'];
-		$flickr_group = $instance['flickr_group'];
-		$flickr_count = $instance['flickr_count'];
+		$title        = isset( $instance['title'] ) ? $instance['title'] : __( 'Flickr Feed', 'wap8plugin-i18n' );
+		$title        = apply_filters( 'widget_title', $title );
+		$flickr_id    = isset( $instance['flickr_id'] ) ? $instance['flickr_id'] : '';
+		$thumb        = isset( $instance['flickr_thumb'] ) ? $instance['flickr_thumb'] : 'lsquare';
+		$flickr_title = isset( $instance['flickr_title'] ) ? $instance['flickr_title'] : 0;
+		$flickr_group = isset( $instance['flickr_group'] ) ? $instance['flickr_group'] : 0;
+		$flickr_count = isset( $instance['flickr_count'] ) ? $instance['flickr_count'] : 5;
 		
 		include_once( ABSPATH . WPINC . '/feed.php' ); // load feed.php
 		
@@ -178,13 +179,13 @@ class wap8_Flickr_Me_Widget extends WP_Widget {
 	// update widget
 	function update( $new_instance, $old_instance ) {
 		
-		$instance                    = $old_instance;
-		$instance['title']           = strip_tags( $new_instance['title'] );
-		$instance['flickr_id']       = strip_tags( $new_instance['flickr_id'] );
-		$instance['flickr_title']    = isset( $new_instance['flickr_title'] );
-		$instance['flickr_thumb']    = $new_instance['flickr_thumb'];
-		$instance['flickr_group']    = isset( $new_instance['flickr_group'] );
-		$instance['flickr_count']    = absint( $new_instance['flickr_count'] );
+		$instance                 = $old_instance;
+		$instance['title']        = strip_tags( $new_instance['title'] );
+		$instance['flickr_id']    = strip_tags( $new_instance['flickr_id'] );
+		$instance['flickr_title'] = isset( $new_instance['flickr_title'] );
+		$instance['flickr_thumb'] = $new_instance['flickr_thumb'];
+		$instance['flickr_group'] = isset( $new_instance['flickr_group'] );
+		$instance['flickr_count'] = absint( $new_instance['flickr_count'] );
 		
 		return $instance;
 	
