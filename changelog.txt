@@ -12,3 +12,8 @@ Flickr Me 1.0.2
 ===============
 
 * Fixed undefined index errors in the widget
+
+Flickr Me 1.0.3
+===============
+
+* Fixed PHP Strict Standard errors in the class

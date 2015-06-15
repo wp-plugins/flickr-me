@@ -1,10 +1,10 @@
 === Flickr Me ===
-Contributors: wearepixel8
+Contributors: heavyheavy, wearepixel8
 Tags: flickr, images, photos, sidebar, widget
 Requires at least: 3.1
-Compatible up to: 3.9
-Tested up to: 3.9
-Stable tag: 1.0.2
+Compatible up to: 4.2.2
+Tested up to: 4.2.2
+Stable tag: 1.0.3
 License: GPLv2
 
 Add Flickr feeds to your widget ready areas.
@@ -44,3 +44,6 @@ If you encounter this message, it means there are no public images in the design
 
 = 1.0.2 =
 * Fixed undefined index errors in the widget
+
+= 1.0.3 =
+* Fixed PHP Strict Standard errors in the class
