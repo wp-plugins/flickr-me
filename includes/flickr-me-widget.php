@@ -84,7 +84,7 @@ add_action( 'widgets_init', 'wap8_flickr_me_widget', 10 );
  *
  * @package Flickr Me
  * @version 1.0.0
- * @since 1.0.2 Fixed undefined index errors
+ * @since 1.0.4 Added error handling when variable is an instance of WP_Error
  * @author Heavy Heavy <@heavyheavyco>
  *
  */
@@ -103,10 +103,10 @@ class wap8_Flickr_Me_Widget extends WP_Widget {
 	function wap8_Flickr_Me_Widget() {
 		$widget_ops = array(
 			'classname'   => 'wap8_flickr_me_widget',
-			'description' => __( 'Display recent images from a designated Flickr account.', 'wap8plugin-i18n' ),
+			'description' => __( 'Display recent images from a designated Flickr account.', 'flickr-me' ),
 			);
 			
-		$this->WP_Widget( 'wap8-Flickr-Me-widget', __( 'Flickr Me', 'wap8plugin-i18n' ), $widget_ops );	
+		$this->WP_Widget( 'wap8-Flickr-Me-widget', __( 'Flickr Me', 'flickr-me' ), $widget_ops );	
 	}
 
 	// widget output
@@ -115,7 +115,7 @@ class wap8_Flickr_Me_Widget extends WP_Widget {
 		extract( $args );
 
 		// saved widget settings
-		$title        = isset( $instance['title'] ) ? $instance['title'] : __( 'Flickr Feed', 'wap8plugin-i18n' );
+		$title        = isset( $instance['title'] ) ? $instance['title'] : __( 'Flickr Feed', 'flickr-me' );
 		$title        = apply_filters( 'widget_title', $title );
 		$flickr_id    = isset( $instance['flickr_id'] ) ? $instance['flickr_id'] : '';
 		$thumb        = isset( $instance['flickr_thumb'] ) ? $instance['flickr_thumb'] : 'lsquare';
@@ -140,13 +140,19 @@ class wap8_Flickr_Me_Widget extends WP_Widget {
 
 		}
 
-		$maxitems = $rss->get_item_quantity( $flickr_count ); 
+		$maxitems = $rss->get_item_quantity( $flickr_count );
 
-		$rss_items = $rss->get_items( 0, $maxitems ); ?>
+		$rss_items = $rss->get_items( 0, $maxitems );
+
+		if ( is_wp_error( $rss ) ) {
+			$error_string = $rss->get_error_message();
+			echo "<div class='error'><p>" . $error_string . "</p></div>";
+			} else {
+		?>
 
 		<div class="flickr-me-feed"><!-- Begin .flickr-me-feed -->
 
-			<?php if ( $maxitems == 0 ) echo '<p>' . __( 'No images found.', 'wap8plugin-i18n' ) . '</p>';
+			<?php if ( $maxitems == 0 ) echo '<p>' . __( 'No images found.', 'flickr-me' ) . '</p>';
 
 			else
 
@@ -170,7 +176,7 @@ class wap8_Flickr_Me_Widget extends WP_Widget {
 			<?php endforeach; ?>	
 		</div><!-- End .flickr-feed -->	
 
-		<?php		
+		<?php }
 
 		echo $after_widget;		
 
@@ -194,7 +200,7 @@ class wap8_Flickr_Me_Widget extends WP_Widget {
 	// widget form
 	function form( $instance ) {
 		$defaults = array(
-			'title'        => __( 'Flickr Feed', 'wap8plugin-i18n' ),
+			'title'        => __( 'Flickr Feed', 'flickr-me' ),
 			'flickr_count' => 5,
 		);
 		$instance = wp_parse_args( ( array ) $instance, $defaults );
@@ -204,23 +210,23 @@ class wap8_Flickr_Me_Widget extends WP_Widget {
 		} ?>
 
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'wap8plugin-i18n' ); ?></label><br />
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'flickr-me' ); ?></label><br />
 			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 		</p>
-		
+
 		<p>
-			<label for="<?php echo $this->get_field_id( 'flickr_id' ); ?>"><?php _e( 'Flickr User or Group ID', 'wap8plugin-i18n' ); ?> &#40;<a href="<?php echo esc_url( 'http://idgettr.com/' ); ?>" target="_blank" title="<?php esc_attr_e( 'Find your Flickr ID using idGettr', 'wap8plugin-i18n' ); ?>">idGettr</a>&#41;</label><br />
+			<label for="<?php echo $this->get_field_id( 'flickr_id' ); ?>"><?php _e( 'Flickr User or Group ID', 'flickr-me' ); ?> &#40;<a href="<?php echo esc_url( 'http://idgettr.com/' ); ?>" target="_blank" title="<?php esc_attr_e( 'Find your Flickr ID using idGettr', 'flickr-me' ); ?>">idGettr</a>&#41;</label><br />
 			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'flickr_id' ); ?>" name="<?php echo $this->get_field_name( 'flickr_id' ); ?>" value="<?php echo esc_attr( isset( $instance['flickr_id'] ) ? $instance['flickr_id'] : '' ); ?>" />
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id( 'flickr_thumb' ); ?>"><?php _e( 'Thumbnail Size', 'wap8plugin-i18n' ); ?></label><br />
+			<label for="<?php echo $this->get_field_id( 'flickr_thumb' ); ?>"><?php _e( 'Thumbnail Size', 'flickr-me' ); ?></label><br />
 			<select class="widefat" id="<?php echo $this->get_field_id( 'flickr_thumb' ); ?>" name="<?php echo $this->get_field_name( 'flickr_thumb' ); ?>">
 			<?php
 				$options = array(
-					'lsquare' => __( 'Large Square 150 x 150', 'wap8plugin-i18n' ),
-					'small'   => __( 'Small 240 x 180', 'wap8plugin-i18n' ),
-					'smalln'  => __( 'Small 320 x 240', 'wap8plugin-i18n' ),
+					'lsquare' => __( 'Large Square 150 x 150', 'flickr-me' ),
+					'small'   => __( 'Small 240 x 180', 'flickr-me' ),
+					'smalln'  => __( 'Small 320 x 240', 'flickr-me' ),
 				);
 
 				foreach ( $options as $key => $value ) {
@@ -231,16 +237,16 @@ class wap8_Flickr_Me_Widget extends WP_Widget {
 		</p>
 
 		<p>
-			<input id="<?php echo $this -> get_field_id( 'flickr_title' ); ?>" name="<?php echo $this->get_field_name( 'flickr_title' ); ?>" type="checkbox" <?php checked( isset( $instance['flickr_title'] ) ? $instance['flickr_title'] : 0 ); ?> />&nbsp;<label for="<?php echo $this -> get_field_id( 'flickr_title' ); ?>"><?php _e( 'Display title with small thumbnail', 'wap8plugin-i18n' ); ?></label>
+			<input id="<?php echo $this -> get_field_id( 'flickr_title' ); ?>" name="<?php echo $this->get_field_name( 'flickr_title' ); ?>" type="checkbox" <?php checked( isset( $instance['flickr_title'] ) ? $instance['flickr_title'] : 0 ); ?> />&nbsp;<label for="<?php echo $this -> get_field_id( 'flickr_title' ); ?>"><?php _e( 'Display title with small thumbnail', 'flickr-me' ); ?></label>
 		</p>
 
 		<p>
-			<input id="<?php echo $this -> get_field_id( 'flickr_group' ); ?>" name="<?php echo $this->get_field_name( 'flickr_group' ); ?>" type="checkbox" <?php checked( isset( $instance['flickr_group'] ) ? $instance['flickr_group'] : 0 ); ?> />&nbsp;<label for="<?php echo $this -> get_field_id( 'flickr_group' ); ?>"><?php _e( 'This is a Flickr Group stream', 'wap8plugin-i18n' ); ?></label>
+			<input id="<?php echo $this -> get_field_id( 'flickr_group' ); ?>" name="<?php echo $this->get_field_name( 'flickr_group' ); ?>" type="checkbox" <?php checked( isset( $instance['flickr_group'] ) ? $instance['flickr_group'] : 0 ); ?> />&nbsp;<label for="<?php echo $this -> get_field_id( 'flickr_group' ); ?>"><?php _e( 'This is a Flickr Group stream', 'flickr-me' ); ?></label>
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id( 'flickr_count' ); ?>"><?php _e( 'Images to Show', 'wap8plugin-i18n' ); ?></label>
-			<input type="number" min="1" max="20" id="<?php echo $this->get_field_id( 'flickr_count' ); ?>" name="<?php echo $this->get_field_name( 'flickr_count' ); ?>" value="<?php echo $instance['flickr_count'];?>" size="2" /> <small><?php _e( 'Max: 20', 'wap8plugin-i18n' ); ?></small>
+			<label for="<?php echo $this->get_field_id( 'flickr_count' ); ?>"><?php _e( 'Images to Show', 'flickr-me' ); ?></label>
+			<input type="number" min="1" max="20" id="<?php echo $this->get_field_id( 'flickr_count' ); ?>" name="<?php echo $this->get_field_name( 'flickr_count' ); ?>" value="<?php echo $instance['flickr_count'];?>" size="2" /> <small><?php _e( 'Max: 20', 'flickr-me' ); ?></small>
 		</p>
 
 		<?php	

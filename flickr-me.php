@@ -4,10 +4,11 @@
 Plugin Name: Flickr Me
 Plugin URI: http://heavyheavy.com
 Description: Add a Flickr feed to any widget ready area
-Version: 1.0.3
+Version: 1.0.4
 Author: Heavy Heavy
 Author URI: http://heavyheavy.com
-Text Domain: wap8plugin-i18n
+Contributors: We Are Pixel8
+Text Domain: flickr-me
 License:
 	Copyright 2013 — 2015 We Are Pixel8 <hello@wearepixel8.com>
 	
@@ -29,7 +30,7 @@ License:
 /*-----------------------------------------------------------------------------------*/
 
 define( 'WAP8_FLICKR_ME', plugin_dir_path( __FILE__ ) );
-define( 'WAP8_FLICKR_ME_VERSION', '1.0.3' );
+define( 'WAP8_FLICKR_ME_VERSION', '1.0.4' );
 
 /*-----------------------------------------------------------------------------------*/
 /* Includes
@@ -87,6 +88,6 @@ add_action( 'plugins_loaded', 'wap8_flickr_me_text_domain', 10 );
 
 function wap8_flickr_me_text_domain() {
 	
-	load_plugin_textdomain( 'wap8plugin-i18n', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+	load_plugin_textdomain( 'flickr-me', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 	
 }
