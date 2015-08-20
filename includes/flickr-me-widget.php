@@ -84,7 +84,7 @@ add_action( 'widgets_init', 'wap8_flickr_me_widget', 10 );
  *
  * @package Flickr Me
  * @version 1.0.0
- * @since 1.0.4 Added error handling when variable is an instance of WP_Error
+ * @since 1.0.5 Updated widget to be compatible with WordPress 4.3
  * @author Heavy Heavy <@heavyheavyco>
  *
  */
@@ -105,8 +105,12 @@ class wap8_Flickr_Me_Widget extends WP_Widget {
 			'classname'   => 'wap8_flickr_me_widget',
 			'description' => __( 'Display recent images from a designated Flickr account.', 'flickr-me' ),
 			);
-			
-		$this->WP_Widget( 'wap8-Flickr-Me-widget', __( 'Flickr Me', 'flickr-me' ), $widget_ops );	
+		
+		parent::__construct(
+            'wap8-flickr-me-widget',
+            __( 'Flickr Me', 'flickr-me' ),
+            $widget_ops
+        );	
 	}
 
 	// widget output
