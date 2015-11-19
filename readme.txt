@@ -2,8 +2,8 @@
 Contributors: heavyheavy, wearepixel8
 Tags: flickr, images, photos, sidebar, widget
 Requires at least: 3.1
-Compatible up to: 4.3
-Tested up to: 4.3
+Compatible up to: 4.4
+Tested up to: 4.4
 Stable tag: 1.0.5
 License: GPLv2
 
